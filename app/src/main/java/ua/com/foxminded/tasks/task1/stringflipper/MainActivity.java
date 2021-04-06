@@ -50,6 +50,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+
+        if (exceptEditText.hasFocus()) {
+            stringFlipper.setToIgnore(exceptEditText.getText());
+        }
+
         String ignoreStringKey = getResources().getString(R.string.ignore_string_key);
         outState.putCharSequence(ignoreStringKey, stringFlipper.getIgnore());
     }
