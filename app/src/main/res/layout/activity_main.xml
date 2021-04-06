@@ -8,10 +8,11 @@
         android:clickable="true"
         android:focusableInTouchMode="true"
         tools:context=".MainActivity"
-        android:id="@+id/constraintLayout1">
+        android:id="@+id/constraintLayout1"
+        android:layout_weight="0.2">
 
     <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
@@ -21,43 +22,45 @@
 
 
         <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="80"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="5dp">
 
             <EditText
                     android:layout_height="wrap_content"
-                    android:ems="20"
                     android:id="@+id/editText"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="5dp"
                     android:inputType="text"
-                    android:layout_width="0dp"
-                    android:layout_weight="1" />
+                    android:textAlignment="viewStart"
+                    android:layout_width="match_parent" />
 
-            <Button
-                    android:text="@string/flip_button_title"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/flipButton"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:textSize="15sp"
-                    android:layout_width="wrap_content"
-                    android:textStyle="bold" />
+            <EditText
+                    android:text="@string/except_default_text"
+                    android:layout_height="40dp"
+                    android:id="@+id/exceptEditText"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/darker_gray"
+                    android:inputType="text"
+                    android:background="@null"
+                    android:layout_width="match_parent"
+                    android:gravity="center|top"
+
+                    android:layout_marginTop="-7dp" />
 
         </LinearLayout>
 
-        <EditText
-                android:text="@string/except_default_text"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:id="@+id/exceptEditText"
-                android:textSize="14sp"
-                android:textColor="@android:color/darker_gray"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:gravity="top"
-                android:background="@null" />
+        <Button
+                android:text="@string/flip_button_title"
+                android:layout_height="wrap_content"
+                android:id="@+id/flipButton"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="10dp"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_weight="5" />
 
     </LinearLayout>
 
