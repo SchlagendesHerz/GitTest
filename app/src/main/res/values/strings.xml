@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">StringFlipper</string>
+    <string name="flip_button_title">FLIP</string>
+    <string name="except_default_text">(exceptions: not set)</string>
+    <string name="except_set_text">(exceptions: %s)</string>
+    <string name="ignore_string_key">ignore_string_key</string>
+    <string name="empty_string" />
+</resources>
