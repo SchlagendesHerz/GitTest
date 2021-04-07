@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">StringFlipper</string>
-    <string name="flip_button_title">FLIP</string>
-    <string name="except_default_text">(exceptions: not set)</string>
-    <string name="except_set_text">(exceptions: %s)</string>
+    <string name="flip_button_text">FLIP</string>
+    <string name="ignore_default_prompt">(exceptions: not set)</string>
+    <string name="ignore_set_prompt">(exceptions: %s)</string>
+    <string name="ignore_ellipsis_prompt">(exceptions: %s…)</string>
     <string name="ignore_string_key">ignore_string_key</string>
+    <string name="ignore_prompt_length">30</string>
     <string name="empty_string" />
 </resources>

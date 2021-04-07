@@ -8,7 +8,7 @@
         android:clickable="true"
         android:focusableInTouchMode="true"
         tools:context=".MainActivity"
-        android:id="@+id/constraintLayout1"
+        android:id="@+id/constraintLayout"
         android:layout_weight="0.2">
 
     <LinearLayout
@@ -37,9 +37,9 @@
                     android:layout_width="match_parent" />
 
             <EditText
-                    android:text="@string/except_default_text"
+                    android:text="@string/ignore_default_prompt"
                     android:layout_height="40dp"
-                    android:id="@+id/exceptEditText"
+                    android:id="@+id/ignorEditText"
                     android:textSize="14sp"
                     android:textColor="@android:color/darker_gray"
                     android:inputType="text"
@@ -52,7 +52,7 @@
         </LinearLayout>
 
         <Button
-                android:text="@string/flip_button_title"
+                android:text="@string/flip_button_text"
                 android:layout_height="wrap_content"
                 android:id="@+id/flipButton"
                 android:layout_marginStart="5dp"
