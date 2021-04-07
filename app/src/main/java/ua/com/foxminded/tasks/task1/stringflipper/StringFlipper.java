@@ -11,13 +11,13 @@ import java.util.stream.Collectors;
 public class StringFlipper {
 
     private static final Pattern spacePattern = Pattern.compile("[^\\p{Space}]+");
-    private Set<Character> toIgnore = new HashSet<>();
+    private Set<Character> toIgnore;
 
     public void setToIgnore(CharSequence toIgnore) {
         if (toIgnore != null) {
             if (this.toIgnore == null) {
                 if (toIgnore.length() == 0) return;
-                this.toIgnore = new HashSet<>();
+                this.toIgnore = new LinkedHashSet<>();
             } else {
                 clearIgnore();
             }
@@ -68,7 +68,6 @@ public class StringFlipper {
     }
 
     private String rotateWord(String toRotate) {
-//        System.out.println("word = " + toRotate);
         StringBuilder word = new StringBuilder(toRotate);
         int leftIndex = 0;
         int rightIndex = word.length() - 1;
