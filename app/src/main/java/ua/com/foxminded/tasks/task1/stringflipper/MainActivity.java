@@ -5,9 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -15,17 +15,18 @@ import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Activity app;
+    private Activity mainActivity;
     private Button flipButton;
     private EditText editText;
     private EditText ignorEditText;
-    private ConstraintLayout constraintLayout1;
+    private ConstraintLayout constraintLayout;
     private StringFlipper stringFlipper;
     private String ignoreDefaultPrompt;
     private String ignoreSetPrompt;
     private String emptyString;
     private String ignoreEllipsisPrompt;
-    private int ignorePromptLength;
+    private int ignorePromptLengthHor;
+    private int ignorePromptLengthVer;
 
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -41,12 +42,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        app = this;
         setContentView(R.layout.activity_main);
+        mainActivity = this;
         init();
         if (savedInstanceState != null) {
             String ignoreStringKey = getResources().getString(R.string.ignore_string_key);
             stringFlipper.setToIgnore(savedInstanceState.getCharSequence(ignoreStringKey));
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (!ignorEditText.hasFocus()) {
+            setIgnorEditTextPrompt();
         }
     }
 
@@ -62,15 +71,41 @@ public class MainActivity extends AppCompatActivity {
         outState.putCharSequence(ignoreStringKey, stringFlipper.getIgnore());
     }
 
+    private void setIgnorEditTextPrompt() {
+        if (stringFlipper.hasIgnoreSet()) {
+
+            CharSequence toSetTextEditPrompt = String.format(ignoreSetPrompt, stringFlipper.getIgnore());
+
+            int ignorePromptLengthLimit = mainActivity
+                    .getResources()
+                    .getConfiguration()
+                    .orientation == Configuration.ORIENTATION_PORTRAIT
+                    ? ignorePromptLengthVer
+                    : ignorePromptLengthHor;
+
+            if (toSetTextEditPrompt.length() > ignorePromptLengthLimit) {
+
+                int subEnd = ignorePromptLengthLimit - ignoreEllipsisPrompt.length() + 2;
+                toSetTextEditPrompt = stringFlipper.getIgnore().subSequence(0, subEnd);
+                toSetTextEditPrompt = String.format(ignoreEllipsisPrompt, toSetTextEditPrompt);
+
+            }
+            ignorEditText.setText(toSetTextEditPrompt);
+        } else {
+            ignorEditText.setText(ignoreDefaultPrompt);
+        }
+    }
+
     private void init() {
         editText = findViewById(R.id.editText);
         flipButton = findViewById(R.id.flipButton);
         ignorEditText = findViewById(R.id.ignorEditText);
-        constraintLayout1 = findViewById(R.id.constraintLayout);
+        constraintLayout = findViewById(R.id.constraintLayout);
         ignoreDefaultPrompt = getResources().getString(R.string.ignore_default_prompt);
         emptyString = getResources().getString(R.string.empty_string);
         ignoreSetPrompt = getResources().getString(R.string.ignore_set_prompt);
-        ignorePromptLength = Integer.parseInt(getResources().getString(R.string.ignore_prompt_length));
+        ignorePromptLengthHor = getResources().getInteger(R.integer.ignore_prompt_length_hor);
+        ignorePromptLengthVer = getResources().getInteger(R.integer.ignore_prompt_length_ver);
         ignoreEllipsisPrompt = getResources().getString(R.string.ignore_ellipsis_prompt);
         stringFlipper = new StringFlipper();
 
@@ -80,47 +115,41 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ignorEditText.clearFocus();
                 editText.clearFocus();
-                hideKeyboard(app);
+                hideKeyboard(mainActivity);
                 editText.setText(stringFlipper.rotate(editText.getText()));
             }
         };
 
-        View.OnFocusChangeListener ofclCostraintLayout1 = new View.OnFocusChangeListener() {
+        View.OnFocusChangeListener ofclCostraintLayout = new View.OnFocusChangeListener() {
 
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    hideKeyboard(app);
+                    hideKeyboard(mainActivity);
                 }
             }
         };
+
 
         View.OnFocusChangeListener ofclIgnorEditText = new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
+
                     ignorEditText.setText(stringFlipper.hasIgnoreSet()
                             ? stringFlipper.getIgnore()
                             : emptyString);
+                    ignorEditText.setSelection(ignorEditText.getText().length());
+
                 } else {
                     stringFlipper.setToIgnore(ignorEditText.getText());
-                    if (stringFlipper.hasIgnoreSet()) {
-                        CharSequence toSetTextEditPrompt = String.format(ignoreSetPrompt, stringFlipper.getIgnore());
-                        if (toSetTextEditPrompt.length() > ignorePromptLength) {
-                            int maxLen = ignorePromptLength - ignoreEllipsisPrompt.length() + 1;
-                            toSetTextEditPrompt = stringFlipper.getIgnore().subSequence(0, maxLen);
-                            toSetTextEditPrompt = String.format(ignoreEllipsisPrompt, toSetTextEditPrompt);
-                        }
-                        ignorEditText.setText(toSetTextEditPrompt);
-                    } else {
-                        ignorEditText.setText(ignoreDefaultPrompt);
-                    }
+                    setIgnorEditTextPrompt();
                 }
             }
         };
 
         flipButton.setOnClickListener(oclFlipButton);
-        constraintLayout1.setOnFocusChangeListener(ofclCostraintLayout1);
+        constraintLayout.setOnFocusChangeListener(ofclCostraintLayout);
         ignorEditText.setOnFocusChangeListener(ofclIgnorEditText);
     }
 }

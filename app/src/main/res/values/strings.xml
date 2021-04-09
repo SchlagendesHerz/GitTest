@@ -5,6 +5,8 @@
     <string name="ignore_set_prompt">(exceptions: %s)</string>
     <string name="ignore_ellipsis_prompt">(exceptions: %s…)</string>
     <string name="ignore_string_key">ignore_string_key</string>
-    <string name="ignore_prompt_length">30</string>
+    <string name="orientation_key">orientation_key</string>
+    <string name="orientation_ver">orientation_ver</string>
+    <string name="orientation_hor">orientation_hor</string>
     <string name="empty_string" />
 </resources>

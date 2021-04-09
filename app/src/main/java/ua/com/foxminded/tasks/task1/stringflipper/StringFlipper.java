@@ -1,16 +1,13 @@
 package ua.com.foxminded.tasks.task1.stringflipper;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class StringFlipper {
 
-    private static final Pattern spacePattern = Pattern.compile("[^\\p{Space}]+");
+    private static final Pattern SPACE_PATTERN = Pattern.compile("[^\\p{Space}]+");
     private Set<Character> toIgnore;
 
     public void setToIgnore(CharSequence toIgnore) {
@@ -36,7 +33,9 @@ public class StringFlipper {
 
     public CharSequence getIgnore() {
         StringBuilder sb = new StringBuilder();
-        toIgnore.forEach(sb::append);
+        if (toIgnore != null) {
+            toIgnore.forEach(sb::append);
+        }
         return sb;
     }
 
@@ -57,35 +56,52 @@ public class StringFlipper {
     }
 
 
-    public String rotate(CharSequence toRotate) {
+    public CharSequence rotate(CharSequence toRotate) {
         StringBuffer strBuffer = new StringBuffer();
-        Matcher matcher = spacePattern.matcher(toRotate);
+        Matcher matcher = SPACE_PATTERN.matcher(toRotate);
         while (matcher.find()) {
             matcher.appendReplacement(strBuffer, rotateWord(matcher.group()));
         }
         matcher.appendTail(strBuffer);
-        return strBuffer.toString();
+        return strBuffer;
     }
 
-    private String rotateWord(String toRotate) {
-        StringBuilder word = new StringBuilder(toRotate);
-        int leftIndex = 0;
-        int rightIndex = word.length() - 1;
-
-        while (leftIndex < rightIndex) {
-
-            if (this.toIgnore.contains(word.charAt(leftIndex))) {
-                leftIndex++;
-            } else if (this.toIgnore.contains(word.charAt(rightIndex))) {
-                rightIndex--;
-            } else {
-                char tempLeftChar = word.charAt(leftIndex);
-                word.setCharAt(leftIndex, word.charAt(rightIndex));
-                word.setCharAt(rightIndex, tempLeftChar);
-                leftIndex++;
-                rightIndex--;
+    private boolean isInIgnore(CharSequence toCheck) {
+        if (toIgnore == null || toIgnore.isEmpty()) {
+            return false;
+        }
+        for (int i = 0; i < toCheck.length(); i++) {
+            if (toIgnore.contains(toCheck.charAt(i))) {
+                return true;
             }
+        }
+        return false;
+    }
+
+    private String rotateWord(CharSequence toRotate) {
+        StringBuilder word = new StringBuilder(toRotate);
+
+        if (isInIgnore(toRotate)) {
+            int leftIndex = 0;
+            int rightIndex = word.length() - 1;
+            while (leftIndex < rightIndex) {
+
+                if (this.toIgnore.contains(word.charAt(leftIndex))) {
+                    leftIndex++;
+                } else if (this.toIgnore.contains(word.charAt(rightIndex))) {
+                    rightIndex--;
+                } else {
+                    char tempLeftChar = word.charAt(leftIndex);
+                    word.setCharAt(leftIndex, word.charAt(rightIndex));
+                    word.setCharAt(rightIndex, tempLeftChar);
+                    leftIndex++;
+                    rightIndex--;
+                }
+            }
+        } else {
+            word = word.reverse();
         }
         return word.toString();
     }
+
 }

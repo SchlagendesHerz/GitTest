@@ -47,7 +47,8 @@
                     android:layout_width="match_parent"
                     android:gravity="center|top"
 
-                    android:layout_marginTop="-7dp" />
+                    android:layout_marginTop="-7dp"
+                    android:maxLines="30" />
 
         </LinearLayout>
 
