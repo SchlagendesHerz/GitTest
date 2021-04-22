@@ -8,7 +8,7 @@
         android:clickable="true"
         android:focusableInTouchMode="true"
         tools:context=".MainActivity"
-        android:id="@+id/constraintLayout"
+        android:id="@+id/backgroundLayout"
         android:layout_weight="0.2">
 
     <LinearLayout
@@ -34,21 +34,23 @@
                     android:id="@+id/editText"
                     android:inputType="text"
                     android:textAlignment="viewStart"
-                    android:layout_width="match_parent" />
+                    android:layout_width="match_parent"
+                    android:autofillHints=""
+                    tools:ignore="LabelFor" />
 
             <EditText
                     android:text="@string/ignore_default_prompt"
                     android:layout_height="40dp"
-                    android:id="@+id/ignorEditText"
+                    android:id="@+id/ignoreEditText"
                     android:textSize="14sp"
                     android:textColor="@android:color/darker_gray"
                     android:inputType="text"
                     android:background="@null"
                     android:layout_width="match_parent"
                     android:gravity="center|top"
-
                     android:layout_marginTop="-7dp"
-                    android:maxLines="30" />
+                    android:autofillHints=""
+                    tools:ignore="LabelFor" />
 
         </LinearLayout>
 
